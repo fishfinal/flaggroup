@@ -29,24 +29,24 @@ go get github.com/fishfinal/flaggroup
 package main
 
 import (
-	flag "github.com/spf13/pflag"
-	"github.com/fishfinal/flaggroup"
+  flag "github.com/spf13/pflag"
+  "github.com/fishfinal/flaggroup"
 )
 
 func main() {
-	fs := flag.NewFlagSet("myapp", flag.ExitOnError)
-	input := fs.String("input", "", "Input file path")
-	output := fs.String("output", "out.txt", "Output file")
-	verbose := fs.BoolP("verbose", "v", false, "Enable verbose mode")
+  fs := flag.NewFlagSet("myapp", flag.ExitOnError)
+  input := fs.String("input", "", "Input file path")
+  output := fs.String("output", "out.txt", "Output file")
+  verbose := fs.BoolP("verbose", "v", false, "Enable verbose mode")
 
-	flaggroup.New(fs).
-		Group("input", "Input Options", "input").
-		Group("output", "Output Options").Add("output", "verbose").
-		Ungrouped("Other Options").
-		Apply()
+  flaggroup.New(fs).
+    Group("input", "Input Options", "input").
+    Group("output", "Output Options").Add("output", "verbose").
+    Ungrouped("Other Options").
+    Apply()
 
-	fs.Parse(nil)
-	_, _, _ = input, output, verbose
+  fs.Parse(nil)
+  _, _, _ = input, output, verbose
 }
 ```
 
@@ -98,12 +98,12 @@ Cobra 的 `Group` 分的是**子命令**，不是选项。要让子命令的 `--
 
 ```go
 rootCmd.SetUsageFunc(func(c *cobra.Command) error {
-	return flaggroup.New(c.Flags(),
-		flaggroup.WithHeading(fmt.Sprintf("Usage: %s [flags] [args]", c.CommandPath())),
-	).
-		Group("main", "Main Options", "yara-dir", "output").
-		Ungrouped("Other Options").
-		Render()
+  return flaggroup.New(c.Flags(),
+    flaggroup.WithHeading(fmt.Sprintf("Usage: %s [flags] [args]", c.CommandPath())),
+  ).
+    Group("main", "Main Options", "yara-dir", "output").
+    Ungrouped("Other Options").
+    Render()
 })
 ```
 
